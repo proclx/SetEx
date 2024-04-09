@@ -52,19 +52,24 @@ inline Set<T>::Set(const Set<T>& S)
 	}
 }
 template<typename T>
-void Set<T>::Remove(const T& value) {
+void Set<T>::Remove(const T& value) 
+{
 	Node<T>* current = head;
 	Node<T>* previous = nullptr;
 	if (!Contains(value))
 	{
-		std::cout << "No such value in the set\n";
+		throw(std::runtime_error("No such value"));
 	}
-	while (current != nullptr) {
-		if (current->value == value) {
-			if (previous == nullptr) {
+	while (current != nullptr) 
+	{
+		if (current->value == value) 
+		{
+			if (previous == nullptr) 
+			{
 				head = current->next;
 			}
-			else {
+			else 
+			{
 				previous->next = current->next;
 			}
 			delete current;

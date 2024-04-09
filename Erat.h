@@ -1,5 +1,12 @@
 #pragma once
 #include "set.h"
+
+// Задано натуральне п.Знайти всі прості числа з проміжку[2; n] за допомогою решета Ератосфена.Суть методу :
+// Записати всі числа від 2 до п;
+// Залишити в записі перше просте число, тобто 2, і викреслити з запису всі кратні йому(4, 6, 8, …)
+// Залишити в записі перше просте число, тобто 3, і викреслити з запису всі кратні йому(6, 9, 12, …)
+// Залишити в записі перше просте число, тобто 5, і викреслити з запису всі кратні йому … Повторювати до кінця послідовності.
+
 class Erat :
     public Set<unsigned>
 {
@@ -10,14 +17,21 @@ public:
     Erat(unsigned f)
         : to(f)
     {
-        for (unsigned i = from + 1; i <= to; i += 2)
+        List curr = new Node<unsigned>(0);
+        List newHead = curr;
+        unsigned i = 3;
+
+        // додавання елементів можна і потрібно оптимізувати, адже ми наперед знаємо, що послідовність впорядкована
+
+        while (i <= to)
         {
-            this->Add(i);
+            curr->next = new Node<unsigned>(i);
+            curr = curr->next;
+            i += 2;
         }
-        /*for (unsigned i = from; i <= to; ++i)
-        {
-            this->Add(i);
-        }*/
+
+        head = newHead->next;
+        delete newHead;
     }
     ~Erat()
     {
@@ -32,11 +46,11 @@ public:
         {
             for (unsigned i = curr->value * curr->value; i <= to; i += curr->value * 2)
             {
-                if (this->Contains(i))
+                try
                 {
                     this->Remove(i);
                 }
-                else
+                catch (...)
                 {
                     ++unsuccesfulAttempt;
                 }
@@ -49,6 +63,17 @@ public:
         this->Add(2);
         std::cout << "Number of primes: " << ++numberOfPrimes << '\n';
         std::cout << "Total attempts: " << totalAttempts << '\n';
+    }
+    void PrintFirst(unsigned n = 1)
+    {
+        List curr = head;
+        unsigned i = 0;
+        while (i < n)
+        {
+            std::cout << curr->value << ' ';
+            curr = curr->next;
+            ++i;
+        }
     }
 };
 
